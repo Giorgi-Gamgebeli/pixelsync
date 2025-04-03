@@ -10,7 +10,6 @@
     "lint": "next lint --max-warnings 0",
     "check-types": "tsc --noEmit"
   },
-  "extends": "@repo/typescript-config/nextjs.json",
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",
     "@iconify/react": "^5.2.0",
