@@ -1,20 +1,20 @@
 "use server";
-
-import {    signIn     } from "@/auth";
+import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { LoginSchema, SignupSchema } from "../_schemas/authSchemas";
+import { SigninSchema, SignupSchema } from "../_schemas/authSchemas";
 import { db } from "./db";
 import { hash } from "bcryptjs";
 import { z } from "zod";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
-export async function login(formData: FormData) {
+export async function signin(formData: FormData) {
   const formDataObj = {
     email: formData.get("email"),
     password: formData.get("password"),
   };
 
-  const result = LoginSchema.safeParse(formDataObj);
+  const result = SigninSchema.safeParse(formDataObj);
 
   if (!result.success) return { error: "Invalid credentials" };
   const { email, password } = result.data;
@@ -23,7 +23,7 @@ export async function login(formData: FormData) {
     await signIn("credentials", {
       email,
       password,
-      redirect: false,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
   } catch (error) {
     if (isRedirectError(error)) throw error;
@@ -47,7 +47,7 @@ export async function signup(values: z.infer<typeof SignupSchema>) {
 
   if (!result.success)
     return {
-      zodErrors: result.error.flatten().fieldErrors,
+      error: "Validation failed on server",
     };
 
   const { email, password, userName } = result.data;
@@ -74,9 +74,27 @@ export async function signup(values: z.infer<typeof SignupSchema>) {
       },
     });
 
+    await signIn("credentials", {
+      email,
+      password,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
+    });
+
     return { sucess: "User created successfully!" };
   } catch (error) {
     console.error(error);
     return { error: "Something went wrong" };
   }
+}
+
+export async function githubProvider() {
+  await signIn("github", {
+    callbackUrl: DEFAULT_LOGIN_REDIRECT,
+  });
+}
+
+export async function googleProvider() {
+  await signIn("google", {
+    callbackUrl: DEFAULT_LOGIN_REDIRECT,
+  });
 }

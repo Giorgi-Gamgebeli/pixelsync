@@ -27,7 +27,7 @@ function page() {
             Send recovery link
           </button>
           <Link
-            href="/login"
+            href="/signin"
             className="text-brand-600 my-5 text-2xl font-medium hover:underline"
           >
             Go back

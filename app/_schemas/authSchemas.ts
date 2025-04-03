@@ -19,7 +19,7 @@ const superValidate = (
   }
 };
 
-export const LoginSchema = z.object({
+export const SigninSchema = z.object({
   email: UserSchemaDatabase.shape.email,
 
   password: z

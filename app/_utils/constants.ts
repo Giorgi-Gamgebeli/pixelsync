@@ -1,4 +1,4 @@
-export const navLinks = ["login"] as const;
+export const navLinks = ["home"] as const;
 
 export const testimonials = [
   {

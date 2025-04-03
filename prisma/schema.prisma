@@ -7,6 +7,128 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id                     Int              @id @unique @default(autoincrement())
+  email                  String           @unique
+  password               String?
+  userName               String
+  firstName              String?
+  lastName               String?
+  avatar                 String?
+  status                 UserStatus       @default(OFFLINE)
+  statusMessage          String?
+  lastSeen               DateTime         @default(now())
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+  channelMessages        ChannelMessage[]
+  receivedMessages       DirectMessage[]  @relation("ReceivedDirectMessages")
+  sentMessages           DirectMessage[]  @relation("SentDirectMessages")
+  receivedFriendRequests FriendRequest[]  @relation("ReceivedFriendRequests")
+  sentFriendRequests     FriendRequest[]  @relation("SentFriendRequests")
+  settings               UserSettings?
+  ownedWorkspaces        Workspace[]      @relation("WorkspaceOwner")
+  channels               Channel[]        @relation("ChannelMembers")
+  User_A                 User[]           @relation("UserFriends")
+  User_B                 User[]           @relation("UserFriends")
+  workspaces             Workspace[]      @relation("UserToWorkspace")
+}
+
+model UserSettings {
+  id            Int     @id @unique @default(autoincrement())
+  theme         Theme   @default(LIGHT)
+  notifications Boolean @default(true)
+  soundEnabled  Boolean @default(true)
+  userId        Int     @unique
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model DirectMessage {
+  id         Int      @id @unique @default(autoincrement())
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  isRead     Boolean  @default(false)
+  senderId   Int
+  receiverId Int
+  receiver   User     @relation("ReceivedDirectMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  sender     User     @relation("SentDirectMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+model Channel {
+  id          Int              @id @unique @default(autoincrement())
+  name        String
+  description String?
+  type        ChannelType      @default(TEXT)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  workspaceId Int
+  workspace   Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  messages    ChannelMessage[]
+  members     User[]           @relation("ChannelMembers")
+
+  @@index([workspaceId])
+}
+
+model ChannelMessage {
+  id        Int      @id @unique @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isEdited  Boolean  @default(false)
+  channelId Int
+  senderId  Int
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  sender    User     @relation(fields: [senderId], references: [id])
+
+  @@index([channelId])
+  @@index([senderId])
+}
+
+model FriendRequest {
+  id         Int           @id @unique @default(autoincrement())
+  createdAt  DateTime      @default(now())
+  status     RequestStatus @default(PENDING)
+  senderId   Int
+  receiverId Int
+  receiver   User          @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+  sender     User          @relation("SentFriendRequests", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@unique([senderId, receiverId])
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+model Workspace {
+  id          Int          @id @unique @default(autoincrement())
+  name        String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  ownerId     Int
+  Channels    Channel[]
+  whiteboards Whiteboard[]
+  owner       User         @relation("WorkspaceOwner", fields: [ownerId], references: [id])
+  users       User[]       @relation("UserToWorkspace")
+
+  @@index([ownerId])
+}
+
+model Whiteboard {
+  id          Int       @id @unique @default(autoincrement())
+  title       String
+  content     Bytes
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  workspaceId Int
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
 enum UserStatus {
   ONLINE
   IDLE
@@ -29,140 +151,4 @@ enum RequestStatus {
   PENDING
   ACCEPTED
   REJECTED
-}
-
-model User {
-  id        Int     @id @unique @default(autoincrement())
-  email     String  @unique
-  password  String
-  userName  String
-  firstName String?
-  lastName  String?
-  avatar    String?
-
-  status        UserStatus @default(OFFLINE)
-  statusMessage String?
-  lastSeen      DateTime   @default(now())
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-
-  workspaces      Workspace[]
-  ownedWorkspaces Workspace[] @relation("WorkspaceOwner")
-
-  friends                User[]          @relation("UserFriends")
-  friendsOf              User[]          @relation("UserFriends")
-  sentFriendRequests     FriendRequest[] @relation("SentFriendRequests")
-  receivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequests")
-
-  sentMessages     DirectMessage[]  @relation("SentDirectMessages")
-  receivedMessages DirectMessage[]  @relation("ReceivedDirectMessages")
-  channelMessages  ChannelMessage[]
-  channels         Channel[]        @relation("ChannelMembers")
-
-  settings UserSettings?
-}
-
-model UserSettings {
-  id            Int     @id @unique @default(autoincrement())
-  theme         Theme   @default(LIGHT)
-  notifications Boolean @default(true)
-  soundEnabled  Boolean @default(true)
-
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int  @unique
-
-  @@index([userId])
-}
-
-model DirectMessage {
-  id        Int      @id @unique @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  isRead    Boolean  @default(false) // Important for unread indicators
-
-  sender     User @relation("SentDirectMessages", fields: [senderId], references: [id], onDelete: Cascade)
-  senderId   Int
-  receiver   User @relation("ReceivedDirectMessages", fields: [receiverId], references: [id], onDelete: Cascade)
-  receiverId Int
-
-  @@index([senderId])
-  @@index([receiverId])
-}
-
-model Channel {
-  id          Int         @id @unique @default(autoincrement())
-  name        String
-  description String?
-  type        ChannelType @default(TEXT)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-
-  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId Int
-
-  members  User[]           @relation("ChannelMembers")
-  messages ChannelMessage[]
-
-  @@index([workspaceId])
-}
-
-model ChannelMessage {
-  id        Int      @id @unique @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  isEdited  Boolean  @default(false)
-
-  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
-  channelId Int
-
-  sender   User @relation(fields: [senderId], references: [id])
-  senderId Int
-
-  @@index([channelId])
-  @@index([senderId])
-}
-
-model FriendRequest {
-  id        Int           @id @unique @default(autoincrement())
-  createdAt DateTime      @default(now())
-  status    RequestStatus @default(PENDING)
-
-  sender     User @relation("SentFriendRequests", fields: [senderId], references: [id], onDelete: Cascade)
-  senderId   Int
-  receiver   User @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
-  receiverId Int
-
-  @@unique([senderId, receiverId])
-  @@index([senderId])
-  @@index([receiverId])
-}
-
-model Workspace {
-  id        Int      @id @unique @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  users       User[]
-  owner       User         @relation("WorkspaceOwner", fields: [ownerId], references: [id])
-  ownerId     Int
-  whiteboards Whiteboard[]
-  Channels    Channel[]
-
-  @@index([ownerId])
-}
-
-model Whiteboard {
-  id        Int      @id @unique @default(autoincrement())
-  title     String
-  content   Bytes
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-
-  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId Int
-
-  @@index([workspaceId])
 }

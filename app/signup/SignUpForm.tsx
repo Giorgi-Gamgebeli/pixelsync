@@ -27,12 +27,13 @@ function SignUpForm() {
   });
 
   async function onSubmit(values: z.infer<typeof SignupSchema>) {
-    toast.success("Account created succesfully");
     reset();
 
     const res = await signup(values);
 
     if (res?.error) return toast.error(res.error);
+
+    if (res?.sucess) toast.success(res.sucess);
   }
 
   return (

@@ -6,11 +6,12 @@ import SignUpForm from "./SignUpForm";
 import ProviderButton from "../_components/ProviderButton";
 import Link from "next/link";
 import UserAgreement from "../_components/UserAgreement";
+import { githubProvider, googleProvider } from "../_lib/actions";
 
 function Page() {
   return (
     <main className="grid min-h-[50rem] grid-cols-[44rem_1fr] text-gray-900">
-      <FlexBox className="border-secondary/20 flex-col border px-10 py-6">
+      <FlexBox className="flex-col border border-gray-300 px-10 py-6">
         <FlexBox className="items-center gap-1">
           <Image
             src={logo}
@@ -27,10 +28,13 @@ function Page() {
           <h1 className="mb-2 text-[2.5rem]">Get started</h1>
           <h3 className="mb-12 text-lg text-gray-700">Create a new account</h3>
 
-          <ProviderButton icon="line-md:github-loop">
+          <ProviderButton icon="line-md:github-loop" action={githubProvider}>
             Continue with Github
           </ProviderButton>
-          <ProviderButton icon="flat-color-icons:google">
+          <ProviderButton
+            icon="flat-color-icons:google"
+            action={googleProvider}
+          >
             Continue with Google
           </ProviderButton>
 

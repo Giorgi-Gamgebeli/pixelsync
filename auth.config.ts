@@ -1,7 +1,7 @@
 import type { NextAuthConfig } from "next-auth";
 import { compare } from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
-import { LoginSchema } from "@/app/_schemas/authSchemas";
+import { SigninSchema } from "@/app/_schemas/authSchemas";
 import { db } from "@/app/_lib/db";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
@@ -12,7 +12,10 @@ export default {
     strategy: "jwt",
   },
   providers: [
-    Google,
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     Github({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -21,7 +24,7 @@ export default {
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) return null;
 
-        const result = LoginSchema.safeParse(credentials);
+        const result = SigninSchema.safeParse(credentials);
 
         if (!result.success) return null;
 
@@ -43,15 +46,14 @@ export default {
 
         const isPasswordValid = await compare(
           password as string,
-          user.password as string
+          user.password as string,
         );
 
         if (!isPasswordValid) return null;
 
         return {
-          numID: +user.id,
           email: user.email,
-          userName: user.userName,
+          name: user.userName,
         };
       },
     }),

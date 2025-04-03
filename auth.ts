@@ -4,24 +4,36 @@ import { db } from "@/app/_lib/db";
 
 const nexAuth = NextAuth({
   callbacks: {
-    // async signIn({ user }) {
-    //   const existingUser = await getUserById(user.id as string);
+    async signIn({ user }) {
+      console.log(user);
+      if (!user?.email || !user.name) return false;
 
-    //   if (!existingUser || !existingUser.emailVerified) {
-    //     return false;
-    //   }
+      const existingUser = await db.user.findUnique({
+        where: { email: user.email },
+      });
 
-    //   return true;
-    // },
+      if (!existingUser) {
+        await db.user.create({
+          data: {
+            email: user.email,
+            userName: user.name,
+            avatar: user.image,
+          },
+        });
+      }
+
+      return true;
+    },
 
     async jwt({ token }) {
-      if (!token.sub) return token;
+      if (!token.email) return token;
 
       const existingUser = await db.user.findUnique({
         where: {
-          id: +token.sub as number,
+          email: token.email,
         },
         select: {
+          id: true,
           avatar: true,
           userName: true,
         },
@@ -29,10 +41,15 @@ const nexAuth = NextAuth({
 
       if (!existingUser) return token;
 
-      token.avatar = existingUser.avatar;
-      token.userName = existingUser.userName;
-
-      return token;
+      return {
+        sub: String(existingUser.id),
+        avatar: existingUser.avatar,
+        userName: existingUser.userName,
+        email: token.email,
+        iat: token.iat,
+        exp: token.exp,
+        jti: token.jti,
+      };
     },
 
     async session({ token, session }) {

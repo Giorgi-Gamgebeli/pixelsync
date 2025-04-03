@@ -14,7 +14,7 @@ CREATE TYPE "RequestStatus" AS ENUM ('PENDING', 'ACCEPTED', 'REJECTED');
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
     "userName" TEXT NOT NULL,
     "firstName" TEXT,
     "lastName" TEXT,

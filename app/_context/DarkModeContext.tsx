@@ -27,7 +27,7 @@ function DarkModeProvider({ children }: { children: React.ReactNode }) {
         document.documentElement.classList.remove("dark");
       }
     },
-    [isDarkMode]
+    [isDarkMode],
   );
 
   function toggleDarkMode() {

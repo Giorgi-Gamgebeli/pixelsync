@@ -22,7 +22,7 @@ const ActiveSectionContext = createContext<ActiveSectionContextTypes | null>(
 function ActiveSectionContextProvider({
   children,
 }: ActiveSectionContextProviderTypes) {
-  const [activeSection, setActiveSection] = useState<SectionNameTypes>("login");
+  const [activeSection, setActiveSection] = useState<SectionNameTypes>("home");
   const [timeOfLastClick, setTimeOfLastClick] = useState<number>(0);
 
   return (

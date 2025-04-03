@@ -54,7 +54,7 @@ async function main() {
     prisma.user.update({
       where: { id: users[0].id },
       data: {
-        friends: {
+        User_A: {
           connect: [{ id: users[1].id }, { id: users[2].id }],
         },
       },
@@ -62,15 +62,18 @@ async function main() {
     prisma.user.update({
       where: { id: users[1].id },
       data: {
-        friends: {
-          connect: [{ id: users[0].id }, { id: users[2].id }],
+        User_B: {
+          connect: [{ id: users[0].id }],
+        },
+        User_A: {
+          connect: [{ id: users[2].id }],
         },
       },
     }),
     prisma.user.update({
       where: { id: users[2].id },
       data: {
-        friends: {
+        User_B: {
           connect: [{ id: users[0].id }, { id: users[1].id }],
         },
       },
