@@ -11,6 +11,7 @@ import AuthRightSide from "../../_components/AuthRightSide";
 import UserAgreement from "../../_components/UserAgreement";
 import SignInForm from "./SignInForm";
 import Logo from "@/app/_components/Logo";
+import { Suspense } from "react";
 
 function Page() {
   return (
@@ -35,7 +36,9 @@ function Page() {
             Continue with Google
           </ProviderButton>
 
-          <SignInForm />
+          <Suspense>
+            <SignInForm />
+          </Suspense>
 
           <FlexBox className="mt-5 justify-center gap-2 text-xl">
             <p>Don&apos;t have an account?</p>

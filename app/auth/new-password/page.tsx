@@ -2,6 +2,7 @@ import FlexBox from "../../_components/FlexBox";
 import Link from "next/link";
 import Logo from "@/app/_components/Logo";
 import NewPasswordForm from "./NewPasswordForm";
+import { Suspense } from "react";
 
 function Page() {
   return (
@@ -15,7 +16,9 @@ function Page() {
           Type in new password to reset your password
         </h3>
 
-        <NewPasswordForm />
+        <Suspense>
+          <NewPasswordForm />
+        </Suspense>
 
         <FlexBox className="mt-5 justify-center gap-2 text-xl">
           <p>Already have an account?</p>
