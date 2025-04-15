@@ -12,10 +12,8 @@ async function main() {
         password:
           "$2b$12$Gb3bsH/caOkqwXHbbwZTX.MBNoe6aEl5wLIeP6b5NUybuBme6iKiG", // password123
         userName: "john_doe",
-        firstName: "John",
-        lastName: "Doe",
         status: "ONLINE",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
+        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
       },
     }),
 
@@ -25,10 +23,8 @@ async function main() {
         password:
           "$2b$12$Gb3bsH/caOkqwXHbbwZTX.MBNoe6aEl5wLIeP6b5NUybuBme6iKiG",
         userName: "jane_doe",
-        firstName: "Jane",
-        lastName: "Doe",
         status: "ONLINE",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
+        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
       },
     }),
     prisma.user.create({
@@ -37,10 +33,8 @@ async function main() {
         password:
           "$2b$12$Gb3bsH/caOkqwXHbbwZTX.MBNoe6aEl5wLIeP6b5NUybuBme6iKiG",
         userName: "bob_smith",
-        firstName: "Bob",
-        lastName: "Smith",
         status: "OFFLINE",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob",
+        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob",
       },
     }),
   ]);

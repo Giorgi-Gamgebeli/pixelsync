@@ -1,28 +1,22 @@
-import FlexBox from "../_components/FlexBox";
-import logo from "../../public/noBGLogo.png";
+import FlexBox from "../../_components/FlexBox";
+import logo from "@/public/noBGLogo.png";
 import Image from "next/image";
-import AuthRightSide from "../_components/AuthRightSide";
+import AuthRightSide from "../../_components/AuthRightSide";
 import SignUpForm from "./SignUpForm";
-import ProviderButton from "../_components/ProviderButton";
+import ProviderButton from "../../_components/ProviderButton";
 import Link from "next/link";
-import UserAgreement from "../_components/UserAgreement";
-import { githubProvider, googleProvider } from "../_lib/actions";
+import UserAgreement from "../../_components/UserAgreement";
+import {
+  githubProvider,
+  googleProvider,
+} from "../../_dataAcessLayer/authActions";
+import Logo from "@/app/_components/Logo";
 
 function Page() {
   return (
     <main className="grid min-h-[50rem] grid-cols-[44rem_1fr] text-gray-900">
       <FlexBox className="flex-col border border-gray-300 px-10 py-6">
-        <FlexBox className="items-center gap-1">
-          <Image
-            src={logo}
-            alt="logo of the company"
-            priority
-            className=""
-            height={50}
-            width={50}
-          />
-          <h2 className="text-2xl font-semibold">Pixel Sync</h2>
-        </FlexBox>
+        <Logo />
 
         <FlexBox className="h-full flex-col justify-center px-14 py-10">
           <h1 className="mb-2 text-[2.5rem]">Get started</h1>
@@ -48,10 +42,7 @@ function Page() {
 
           <FlexBox className="mt-5 justify-center gap-2 text-xl">
             <p>Already have an account?</p>
-            <Link
-              href="/signin"
-              className="text-cyan-500 underline hover:no-underline"
-            >
+            <Link href="/auth/signin" className="text-cyan-500 hover:underline">
               Sign In Now
             </Link>
           </FlexBox>

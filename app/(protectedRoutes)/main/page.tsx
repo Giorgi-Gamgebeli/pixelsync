@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 function Page() {
@@ -14,7 +14,13 @@ function Page() {
 
   return (
     <main className="h-screen w-screen">
-      <>{JSON.stringify(session?.user)}</>
+      <div>{JSON.stringify(session?.user)}</div>
+      <button
+        onClick={async () => await signOut()}
+        className="cursor-pointer border border-black"
+      >
+        signOut
+      </button>
     </main>
   );
 }

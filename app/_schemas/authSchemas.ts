@@ -31,11 +31,35 @@ export const SigninSchema = z.object({
     }),
 });
 
+export const ResetPasswordSchema = z.object({
+  email: UserSchemaDatabase.shape.email,
+});
+
 export const SignupSchema = z
   .object({
     userName: UserSchemaDatabase.shape.userName,
 
     email: UserSchemaDatabase.shape.email,
+
+    password: z
+      .string({
+        message: "Only text is allowed",
+      })
+      .min(8, {
+        message: "Password needs a minimum of 8 characters",
+      }),
+
+    passwordConfirm: z.string({
+      message: "Only text is allowed",
+    }),
+  })
+  .superRefine(superValidate);
+
+export const NewPasswordSchema = z
+  .object({
+    token: z.string({
+      message: "Only text is allowed",
+    }),
 
     password: z
       .string({

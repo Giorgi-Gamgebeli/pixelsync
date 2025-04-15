@@ -1,18 +1,32 @@
-import React from "react";
+"use client";
 
-type FormRowProps = {
-  label?: string;
-  error?: string;
-  children: React.ReactNode;
-};
+import { HTMLInputTypeAttribute } from "react";
+import {
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from "react-hook-form";
+import Link from "next/link";
+import Input from "./Input";
 
-function FormRow({ label, error, children }: FormRowProps) {
-  // Check if the children is a React element before accessing its props same as (children?.props.id)
-  const childElement = React.Children.only(
-    Array.isArray(children) ? children[0] : children,
-  );
-  const id = childElement.props.id;
+type FormRowProps<T extends FieldValues> = {
+  label: string;
+  errors: FieldErrors<T>;
+  type: HTMLInputTypeAttribute;
+  id: Path<T>;
+  register: UseFormRegister<T>;
+  forgotPassword?: boolean;
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
+function FormRow<T extends FieldValues>({
+  label,
+  errors,
+  register,
+  id,
+  forgotPassword,
+  ...rest
+}: FormRowProps<T>) {
   return (
     <div className="relative flex flex-col gap-0.5 pt-[1.5rem] lg:pt-[1.2rem]">
       {label && (
@@ -20,8 +34,23 @@ function FormRow({ label, error, children }: FormRowProps) {
           {label}
         </label>
       )}
-      {children}
-      {error && <span className="text-xl text-red-700">{error}</span>}
+
+      {forgotPassword && (
+        <Link
+          href="/auth/reset-password"
+          className="absolute top-[0.6rem] right-0 mt-2 inline-block text-xl hover:underline"
+        >
+          Forgot Password?
+        </Link>
+      )}
+
+      <Input id={id} register={register} {...rest} />
+
+      {errors[id] && (
+        <span className="text-xl text-red-700">
+          {String(errors[id].message)}
+        </span>
+      )}
     </div>
   );
 }

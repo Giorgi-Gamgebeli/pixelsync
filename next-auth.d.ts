@@ -3,7 +3,7 @@ import { DefaultSession } from "next-auth";
 export type ExtendedUser = DefaultSession["user"] & {
   avatar?: string;
   userName: string;
-  numID: number;
+  id: string;
 };
 
 declare module "next-auth" {

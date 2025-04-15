@@ -24,13 +24,13 @@ function Header() {
         {/* <Nav /> */}
         <FlexBox className="border-brand-200 items-center gap-2 border-l pl-2">
           <Link
-            href="/signin"
+            href="/auth/signin"
             className="border-brand-200 hover:bg-brand-200 rounded-full border px-3 py-2 transition-all duration-300"
           >
             Signin
           </Link>
           <Link
-            href="/signup"
+            href="/auth/signup"
             className="bg-primary hover:bg-secondary rounded-full px-4 py-2 text-sm text-white transition-all duration-300"
           >
             Get Started

@@ -14,6 +14,7 @@ function AuthRightSide() {
   useEffect(() => {
     layerAnimation(animate);
   }, [animate]);
+
   return (
     <aside
       className="relative flex h-full w-full items-center justify-center overflow-hidden bg-white"

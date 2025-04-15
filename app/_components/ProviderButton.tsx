@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { githubProvider } from "../_lib/actions";
+import { githubProvider } from "../_dataAcessLayer/authActions";
 
 type ProviderButtonProps = {
   children: React.ReactNode;

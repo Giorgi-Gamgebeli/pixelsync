@@ -1,10 +1,16 @@
 // Array of routes which are accesable to public
 
-export const publicRoutes = ["/"];
+export const publicRoutes = ["/", "/service", "/privacy"];
 
 // Array of routes which are nesseary for authentication
 
-export const authRoutes = ["/signin", "/signup", "/passwordrecovery"];
+export const authRoutes = [
+  "/auth/signin",
+  "/auth/signup",
+  "/auth/reset-password",
+  "/auth/new-verification",
+  "/auth/new-password",
+];
 
 // Auth prefix
 

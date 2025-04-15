@@ -8,13 +8,13 @@ datasource db {
 }
 
 model User {
-  id                     Int              @id @unique @default(autoincrement())
+  id                     String           @id @unique @default(uuid())
   email                  String           @unique
+  name                   String?
+  image                  String?
   password               String?
-  userName               String
-  firstName              String?
-  lastName               String?
-  avatar                 String?
+  userName               String?
+  emailVerified          DateTime?
   status                 UserStatus       @default(OFFLINE)
   statusMessage          String?
   lastSeen               DateTime         @default(now())
@@ -31,6 +31,54 @@ model User {
   User_A                 User[]           @relation("UserFriends")
   User_B                 User[]           @relation("UserFriends")
   workspaces             Workspace[]      @relation("UserToWorkspace")
+  Account                Account[]
+  Session                Session[]
+}
+
+model Account {
+  id                String  @id @unique @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @unique @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id      String   @id @unique @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model ResetPasswordToken {
+  id      String   @id @unique @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
 }
 
 model UserSettings {
@@ -38,7 +86,7 @@ model UserSettings {
   theme         Theme   @default(LIGHT)
   notifications Boolean @default(true)
   soundEnabled  Boolean @default(true)
-  userId        Int     @unique
+  userId        String  @unique
   user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
@@ -50,8 +98,8 @@ model DirectMessage {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   isRead     Boolean  @default(false)
-  senderId   Int
-  receiverId Int
+  senderId   String
+  receiverId String
   receiver   User     @relation("ReceivedDirectMessages", fields: [receiverId], references: [id], onDelete: Cascade)
   sender     User     @relation("SentDirectMessages", fields: [senderId], references: [id], onDelete: Cascade)
 
@@ -81,7 +129,7 @@ model ChannelMessage {
   updatedAt DateTime @updatedAt
   isEdited  Boolean  @default(false)
   channelId Int
-  senderId  Int
+  senderId  String
   channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
   sender    User     @relation(fields: [senderId], references: [id])
 
@@ -93,8 +141,8 @@ model FriendRequest {
   id         Int           @id @unique @default(autoincrement())
   createdAt  DateTime      @default(now())
   status     RequestStatus @default(PENDING)
-  senderId   Int
-  receiverId Int
+  senderId   String
+  receiverId String
   receiver   User          @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
   sender     User          @relation("SentFriendRequests", fields: [senderId], references: [id], onDelete: Cascade)
 
@@ -108,7 +156,7 @@ model Workspace {
   name        String
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  ownerId     Int
+  ownerId     String
   Channels    Channel[]
   whiteboards Whiteboard[]
   owner       User         @relation("WorkspaceOwner", fields: [ownerId], references: [id])

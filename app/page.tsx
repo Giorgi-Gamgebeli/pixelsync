@@ -25,7 +25,7 @@ function Page() {
             creators. Start your journey today and bring your ideas to life.
           </p>
           <Link
-            href="/signin"
+            href="/auth/signin"
             className="bg-brand-500 rounded-lg px-4 py-2 text-xl font-medium text-gray-800 shadow-[0_4px_0_0_#000] transition-all duration-300 hover:translate-y-1 hover:shadow-none"
           >
             Start Creating

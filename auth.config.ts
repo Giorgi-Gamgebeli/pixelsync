@@ -2,7 +2,7 @@ import type { NextAuthConfig } from "next-auth";
 import { compare } from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
 import { SigninSchema } from "@/app/_schemas/authSchemas";
-import { db } from "@/app/_lib/db";
+import { db } from "@/app/_dataAcessLayer/db";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 
@@ -53,13 +53,12 @@ export default {
 
         return {
           email: user.email,
-          name: user.userName,
         };
       },
     }),
   ],
   pages: {
-    signIn: "/",
-    error: "/",
+    signIn: "/auth/signin",
+    error: "/auth/signin",
   },
 } satisfies NextAuthConfig;
