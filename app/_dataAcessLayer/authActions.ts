@@ -46,8 +46,10 @@ export async function signin(values: z.infer<typeof SigninSchema>): Promise<
       },
     });
 
-    if (!existingUser || !existingUser.email || !existingUser.password)
-      throw new Error("Email does not exist!");
+    if (!existingUser) throw new Error("Email does not exist!");
+
+    if (!existingUser.password)
+      throw new Error("Email already in use with different provider!");
 
     if (!existingUser.emailVerified) {
       const verificationToken = await generateVerificationToken(

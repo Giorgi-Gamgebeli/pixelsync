@@ -45,8 +45,8 @@ function SignUpForm() {
   }
 
   function providerSignIn(provider: "google" | "github") {
-    startTransition(() => {
-      signIn(provider, {
+    startTransition(async () => {
+      await signIn(provider, {
         callbackUrl: DEFAULT_LOGIN_REDIRECT,
       });
     });
