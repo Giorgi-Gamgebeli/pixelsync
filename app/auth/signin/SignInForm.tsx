@@ -1,20 +1,23 @@
 "use client";
 
-import { signin } from "../../_dataAcessLayer/authActions";
+import { SigninSchema } from "@/app/_schemas/authSchemas";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { z } from "zod";
 import FlexBox from "../../_components/FlexBox";
 import FormRow from "../../_components/FormRow";
-import Input from "../../_components/Input";
-import Link from "next/link";
-import toast from "react-hot-toast";
-import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import { SigninSchema } from "@/app/_schemas/authSchemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { signin } from "../../_dataAcessLayer/authActions";
+import AuthButton from "../AuthButton";
+import ProviderButton from "../ProviderButton";
 
 function SignInForm() {
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     if (searchParams.get("error") === "OAuthAccountNotLinked") {
@@ -39,27 +42,53 @@ function SignInForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof SigninSchema>) {
-    const res = await signin(values);
+  function onSubmit(values: z.infer<typeof SigninSchema>) {
+    startTransition(async () => {
+      const res = await signin(values);
 
-    if ("success" in res) {
-      toast.success(res.success);
-      reset();
-    }
-    if ("error" in res) toast.error(res.error);
+      if ("success" in res) {
+        toast.success(res.success);
+        reset();
+      }
+      if ("error" in res) toast.error(res.error);
+    });
+  }
+
+  function providerSignIn(provider: "google" | "github") {
+    startTransition(() => {
+      signIn(provider, {
+        callbackUrl: DEFAULT_LOGIN_REDIRECT,
+      });
+    });
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <ProviderButton
+        onClick={() => providerSignIn("github")}
+        disabled={isPending}
+        icon="line-md:github-loop"
+      >
+        Continue with Github
+      </ProviderButton>
+      <ProviderButton
+        onClick={() => providerSignIn("google")}
+        disabled={isPending}
+        icon="flat-color-icons:google"
+      >
+        Continue with Google
+      </ProviderButton>
+
       <FlexBox className="mt-8 items-center gap-3">
-        <div className="w-full border-b border-gray-300"></div>
+        <div className="w-full border-b border-gray-300" />
         <span className="text-xl">or</span>
-        <div className="w-full border-b border-gray-300"></div>
+        <div className="w-full border-b border-gray-300" />
       </FlexBox>
 
       <FormRow
         errors={errors}
         register={register}
+        disabled={isPending}
         label="Email"
         type="email"
         id="email"
@@ -69,6 +98,7 @@ function SignInForm() {
       <FormRow
         errors={errors}
         register={register}
+        disabled={isPending}
         label="Password"
         type="password"
         id="password"
@@ -76,9 +106,9 @@ function SignInForm() {
         forgotPassword
       />
 
-      <button className="bg-brand-400 hover:bg-brand-500 border-brand-600 mt-14 w-full cursor-pointer rounded-lg border py-3 text-2xl text-gray-700 transition-all duration-300">
+      <AuthButton disabled={isPending} marginTop>
         Sign In
-      </button>
+      </AuthButton>
     </form>
   );
 }

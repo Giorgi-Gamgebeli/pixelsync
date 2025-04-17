@@ -29,7 +29,7 @@ function Input<T extends FieldValues>({
           ? register(id, { valueAsNumber: type === "number" })
           : { onBlur: onBlur, name: id })}
         {...rest}
-        className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-xl outline-none focus:border-gray-400 focus:shadow-[0_0_10px_rgba(0,0,0,0.01)] focus:shadow-gray-200 focus:outline disabled:cursor-not-allowed disabled:bg-gray-300 disabled:dark:bg-gray-600"
+        className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-xl outline-none focus:border-gray-400 focus:shadow-[0_0_10px_rgba(0,0,0,0.01)] focus:shadow-gray-200 focus:outline disabled:cursor-not-allowed disabled:bg-gray-200"
       />
 
       {type === "password" && (

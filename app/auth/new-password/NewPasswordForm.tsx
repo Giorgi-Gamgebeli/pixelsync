@@ -7,13 +7,15 @@ import toast from "react-hot-toast";
 import { NewPasswordSchema } from "@/app/_schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Input from "@/app/_components/Input";
+import { useTransition } from "react";
+import AuthButton from "../AuthButton";
 
 function NewPasswordForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const {
     handleSubmit,
@@ -28,17 +30,22 @@ function NewPasswordForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof NewPasswordSchema>) {
-    if (!token) return toast.error("Missing token!");
+  function onSubmit(values: z.infer<typeof NewPasswordSchema>) {
+    startTransition(async () => {
+      if (!token) {
+        toast.error("Missing token!");
+        return;
+      }
 
-    const res = await newPassword(values);
+      const res = await newPassword(values);
 
-    if ("success" in res) {
-      toast.success(res.success);
-      reset();
-    }
+      if ("success" in res) {
+        toast.success(res.success);
+        reset();
+      }
 
-    if ("error" in res) toast.error(res.error);
+      if ("error" in res) toast.error(res.error);
+    });
   }
 
   return (
@@ -46,6 +53,7 @@ function NewPasswordForm() {
       <FormRow
         errors={errors}
         register={register}
+        disabled={isPending}
         label="New password"
         type="password"
         id="password"
@@ -54,6 +62,7 @@ function NewPasswordForm() {
       <FormRow
         errors={errors}
         register={register}
+        disabled={isPending}
         label="Confirm new password"
         type="password"
         id="passwordConfirm"
@@ -62,16 +71,15 @@ function NewPasswordForm() {
       <Input
         register={register}
         defaultValue={token || ""}
+        disabled
         hidden
         type="text"
         id="token"
       />
 
-      <div className="mt-10 mb-5 w-full border-b border-gray-300"></div>
+      <div className="mt-10 mb-5 w-full border-b border-gray-300" />
 
-      <button className="bg-brand-400 hover:bg-brand-500 border-brand-600 mb-5 w-full cursor-pointer rounded-lg border py-3 text-2xl text-gray-700 transition-all duration-300">
-        Reset password
-      </button>
+      <AuthButton disabled={isPending}>Reset password</AuthButton>
     </form>
   );
 }

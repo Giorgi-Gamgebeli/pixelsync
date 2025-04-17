@@ -17,6 +17,7 @@ type FormRowProps<T extends FieldValues> = {
   id: Path<T>;
   register: UseFormRegister<T>;
   forgotPassword?: boolean;
+  disabled: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 function FormRow<T extends FieldValues>({

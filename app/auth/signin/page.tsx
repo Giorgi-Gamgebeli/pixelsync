@@ -1,17 +1,10 @@
-import Link from "next/link";
-import FlexBox from "../../_components/FlexBox";
-import {
-  githubProvider,
-  googleProvider,
-} from "../../_dataAcessLayer/authActions";
-import Image from "next/image";
-import logo from "@/public/noBGLogo.png";
-import ProviderButton from "../../_components/ProviderButton";
-import AuthRightSide from "../../_components/AuthRightSide";
-import UserAgreement from "../../_components/UserAgreement";
-import SignInForm from "./SignInForm";
 import Logo from "@/app/_components/Logo";
+import Link from "next/link";
 import { Suspense } from "react";
+import FlexBox from "../../_components/FlexBox";
+import UserAgreement from "../UserAgreement";
+import AuthRightSide from "../AuthRightSide";
+import SignInForm from "./SignInForm";
 
 function Page() {
   return (
@@ -25,16 +18,6 @@ function Page() {
           <h3 className="mb-12 text-lg text-gray-700">
             Sign in to your account
           </h3>
-
-          <ProviderButton icon="line-md:github-loop" action={githubProvider}>
-            Continue with Github
-          </ProviderButton>
-          <ProviderButton
-            icon="flat-color-icons:google"
-            action={googleProvider}
-          >
-            Continue with Google
-          </ProviderButton>
 
           <Suspense>
             <SignInForm />

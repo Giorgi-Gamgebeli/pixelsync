@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { layerAnimation } from "../_animations/authAnimation";
 import { useAnimate } from "framer-motion";
-import MotionComponent from "./MotionComponent";
+import MotionComponent from "@/app/_components/MotionComponent";
 import Image from "next/image";
 import VideoPlayer from "./VideoPlayer";
 import illustration from "@/public/authIllustration.jpg";

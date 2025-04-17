@@ -15,12 +15,6 @@ function VideoPlayer({ videoURL }: VideoPlayerProps) {
     setIsClient(true);
   }, []);
 
-  // const handleProgress = ({ playedSeconds }: { playedSeconds: number }) => {
-  //   if (playedSeconds >= endTime && playerRef.current) {
-  //     playerRef.current.seekTo(startTime, "seconds");
-  //   }
-  // };
-
   return (
     <div className="pointer-events-none relative min-w-full pt-[56.25%]">
       {isClient && (
@@ -31,15 +25,9 @@ function VideoPlayer({ videoURL }: VideoPlayerProps) {
           muted
           loop
           controls={false}
-          // onProgress={handleProgress}
           width="100%"
           height="100%"
           className="absolute inset-0"
-          // config={{
-          //   youtube: {
-          //     playerVars: { start: startTime },
-          //   },
-          // }}
         />
       )}
     </div>

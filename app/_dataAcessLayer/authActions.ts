@@ -122,18 +122,6 @@ export async function signup(values: z.infer<typeof SignupSchema>): Promise<
   }
 }
 
-export async function githubProvider() {
-  await signIn("github", {
-    callbackUrl: DEFAULT_LOGIN_REDIRECT,
-  });
-}
-
-export async function googleProvider() {
-  await signIn("google", {
-    callbackUrl: DEFAULT_LOGIN_REDIRECT,
-  });
-}
-
 export async function newVerification(token: string) {
   try {
     const existingToken = await getVerificationTokenByToken(token);

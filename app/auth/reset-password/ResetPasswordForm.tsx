@@ -8,8 +8,12 @@ import toast from "react-hot-toast";
 import { ResetPasswordSchema } from "@/app/_schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import AuthButton from "../AuthButton";
+import { useTransition } from "react";
 
 function ResetPasswordForm() {
+  const [isPending, startTransition] = useTransition();
+
   const {
     handleSubmit,
     formState: { errors },
@@ -22,15 +26,17 @@ function ResetPasswordForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof ResetPasswordSchema>) {
-    const res = await resetPassword(values);
+  function onSubmit(values: z.infer<typeof ResetPasswordSchema>) {
+    startTransition(async () => {
+      const res = await resetPassword(values);
 
-    if ("success" in res) {
-      toast.success(res.success);
-      reset();
-    }
+      if ("success" in res) {
+        toast.success(res.success);
+        reset();
+      }
 
-    if ("error" in res) toast.error(res.error);
+      if ("error" in res) toast.error(res.error);
+    });
   }
 
   return (
@@ -38,16 +44,15 @@ function ResetPasswordForm() {
       <FormRow
         errors={errors}
         register={register}
+        disabled={isPending}
         label="Email"
         type="email"
         id="email"
       />
 
-      <div className="mt-10 mb-5 w-full border-b border-gray-300"></div>
+      <div className="mt-10 mb-5 w-full border-b border-gray-300" />
 
-      <button className="bg-brand-400 hover:bg-brand-500 border-brand-600 mb-5 w-full cursor-pointer rounded-lg border py-3 text-2xl text-gray-700 transition-all duration-300">
-        Send reset email
-      </button>
+      <AuthButton disabled={isPending}>Send reset email</AuthButton>
     </form>
   );
 }
