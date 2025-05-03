@@ -2,6 +2,8 @@
 
 import { Toaster } from "react-hot-toast";
 import { useDarkModeContext } from "./_context/DarkModeContext";
+import { Provider } from "react-redux";
+import store from "./store";
 // import { AppProgressBar } from "next-nprogress-bar";
 
 function ClientProviders({ children }: { children: React.ReactNode }) {
@@ -16,7 +18,7 @@ function ClientProviders({ children }: { children: React.ReactNode }) {
         options={{ showSpinner: false }}
       /> */}
 
-      {children}
+      <Provider store={store}>{children}</Provider>
 
       <Toaster
         position="top-center"

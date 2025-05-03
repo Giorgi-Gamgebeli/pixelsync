@@ -14,6 +14,7 @@ async function main() {
         userName: "john_doe",
         status: "ONLINE",
         image: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
+        emailVerified: new Date(),
       },
     }),
 
@@ -25,6 +26,7 @@ async function main() {
         userName: "jane_doe",
         status: "ONLINE",
         image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
+        emailVerified: new Date(),
       },
     }),
     prisma.user.create({
@@ -35,6 +37,7 @@ async function main() {
         userName: "bob_smith",
         status: "OFFLINE",
         image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob",
+        emailVerified: new Date(),
       },
     }),
   ]);

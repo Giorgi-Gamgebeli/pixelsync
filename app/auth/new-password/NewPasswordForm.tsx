@@ -54,6 +54,7 @@ function NewPasswordForm() {
         errors={errors}
         register={register}
         disabled={isPending}
+        placeholder="••••••••"
         label="New password"
         type="password"
         id="password"
@@ -63,6 +64,7 @@ function NewPasswordForm() {
         errors={errors}
         register={register}
         disabled={isPending}
+        placeholder="••••••••"
         label="Confirm new password"
         type="password"
         id="passwordConfirm"

@@ -45,6 +45,7 @@ function ResetPasswordForm() {
         errors={errors}
         register={register}
         disabled={isPending}
+        placeholder="example@gmail.com"
         label="Email"
         type="email"
         id="email"

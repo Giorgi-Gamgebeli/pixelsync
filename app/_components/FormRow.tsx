@@ -14,6 +14,7 @@ type FormRowProps<T extends FieldValues> = {
   label: string;
   errors: FieldErrors<T>;
   type: HTMLInputTypeAttribute;
+  placeholder: string;
   id: Path<T>;
   register: UseFormRegister<T>;
   forgotPassword?: boolean;

@@ -79,6 +79,7 @@ function SignUpForm() {
         errors={errors}
         register={register}
         disabled={isPending}
+        placeholder="john123"
         label="Username"
         type="text"
         id="userName"
@@ -88,6 +89,7 @@ function SignUpForm() {
         errors={errors}
         register={register}
         disabled={isPending}
+        placeholder="example@gmail.com"
         label="Email"
         type="email"
         id="email"
@@ -97,6 +99,7 @@ function SignUpForm() {
         errors={errors}
         register={register}
         disabled={isPending}
+        placeholder="••••••••"
         label="Password"
         type="password"
         id="password"
@@ -106,6 +109,7 @@ function SignUpForm() {
         errors={errors}
         register={register}
         disabled={isPending}
+        placeholder="••••••••"
         label="Reapeat password"
         type="password"
         id="passwordConfirm"

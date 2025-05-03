@@ -37,8 +37,8 @@ function SignInForm() {
   } = useForm<z.infer<typeof SigninSchema>>({
     resolver: zodResolver(SigninSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "john@test.com",
+      password: "password123",
     },
   });
 
@@ -89,20 +89,20 @@ function SignInForm() {
         errors={errors}
         register={register}
         disabled={isPending}
+        placeholder="example@gmail.com"
         label="Email"
         type="email"
         id="email"
-        defaultValue="jane@test.com"
       />
 
       <FormRow
         errors={errors}
         register={register}
         disabled={isPending}
+        placeholder="••••••••"
         label="Password"
         type="password"
         id="password"
-        defaultValue="password123"
         forgotPassword
       />
 
