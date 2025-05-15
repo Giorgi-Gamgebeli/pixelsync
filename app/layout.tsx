@@ -6,13 +6,6 @@ import { ActiveSectionContextProvider } from "./_context/ActiveSectionContext";
 import ClientProviders from "./ClientProviders";
 import { SessionProvider } from "next-auth/react";
 
-// const roboto = Roboto({
-//   weight: ["300", "400", "500", "700", "900"],
-//   subsets: ["latin"],
-//   display: "swap",
-//   variable: "--fontFamily_Poppins",
-// });
-
 const rubik = Rubik({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],

@@ -5,9 +5,10 @@ import ReactPlayer from "react-player";
 
 type VideoPlayerProps = {
   videoURL: string;
+  id:string;
 };
 
-function VideoPlayer({ videoURL }: VideoPlayerProps) {
+function VideoPlayer({ videoURL , id }: VideoPlayerProps) {
   const playerRef = useRef<ReactPlayer | null>(null);
   const [isClient, setIsClient] = useState(false);
 
@@ -16,7 +17,7 @@ function VideoPlayer({ videoURL }: VideoPlayerProps) {
   }, []);
 
   return (
-    <div className="pointer-events-none relative min-w-full pt-[56.25%]">
+    <div className="pointer-events-none relative aspect-video min-w-full">
       {isClient && (
         <ReactPlayer
           ref={playerRef}
@@ -24,10 +25,10 @@ function VideoPlayer({ videoURL }: VideoPlayerProps) {
           playing
           muted
           loop
+          id={id}
           controls={false}
           width="100%"
           height="100%"
-          className="absolute inset-0"
         />
       )}
     </div>

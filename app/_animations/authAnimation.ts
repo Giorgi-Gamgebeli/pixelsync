@@ -122,7 +122,6 @@ export async function layerAnimation(animate: Animate) {
       duration: 0,
     },
   );
-
   animate("#line1", { x: -1710, y: -1710 }, { duration: 0.5 });
   animate("#line2", { x: -1710, y: -1710 }, { duration: 0.5, delay: 0.1 });
   await animate(
@@ -131,28 +130,68 @@ export async function layerAnimation(animate: Animate) {
     { duration: 0.5, delay: 0.2 },
   );
 
-  animate("#illustration", { y: 0, display: "block" }, { duration: 0.5 });
+  slowSliderHeading(animate);
+  slowSliderImages(animate);
 
-  slowSliderHeading(animate, "#headingSlider");
-  await slowSliderImages(animate, "#videoSlider");
+  await animate("#thirdLayer", { y: 0, display: "flex" }, { duration: 0.5 });
+
+  await animate(
+    "#thirdLayer",
+    { scale: 20 },
+    {
+      duration: 0.5,
+    },
+  );
+
+  animate(
+    "#thirdLayer",
+    { scale: 1, height: "100%", width: "100%", borderRadius: 0 },
+    {
+      duration: 0,
+    },
+  );
 }
 
-async function slowSliderHeading(animate: Animate, element: string) {
-  animate(element, { display: "flex" }, { duration: 0 });
-  await animate(element, { x: "-100%" }, { duration: 0.5, delay: 0.5 });
-  await animate(element, { x: "-140%" }, { duration: 5, ease: "linear" });
-  await animate(element, { x: "-300%" }, { duration: 0.5 });
-  await animate(element, { x: "-340%" }, { duration: 5, ease: "linear" });
-  await animate(element, { x: "-535%" }, { duration: 0.5 });
-  // await animate(element, { x: "-540%" }, { duration: 5, ease: "linear" });
+async function slowSliderHeading(animate: Animate) {
+  animate("#headingSlider", { display: "flex" }, { duration: 0 });
+  await animate(
+    "#headingSlider",
+    { x: "-100%" },
+    { duration: 0.5, delay: 0.5 },
+  );
+  await animate(
+    "#headingSlider",
+    { x: "-130%" },
+    { duration: 5, ease: "linear" },
+  );
+  await animate("#headingSlider", { x: "-300%" }, { duration: 0.5 });
+  await animate(
+    "#headingSlider",
+    { x: "-340%" },
+    { duration: 5, ease: "linear" },
+  );
+  await animate("#headingSlider", { x: "-530%" }, { duration: 0.5 });
 }
 
-async function slowSliderImages(animate: Animate, element: string) {
-  animate(element, { display: "flex" }, { duration: 0 });
-  await animate(element, { x: "-90%" }, { duration: 0.5, delay: 0.5 });
-  await animate(element, { x: "-100%" }, { duration: 5, ease: "linear" });
-  await animate(element, { x: "-290%" }, { duration: 0.5 });
-  await animate(element, { x: "-300%" }, { duration: 5, ease: "linear" });
-  await animate(element, { x: "-500%" }, { duration: 0.5 });
-  // await animate(element, { x: "-500%" }, { duration: 5, ease: "linear" });
+async function slowSliderImages(animate: Animate) {
+  animate("#videoSlider", { display: "flex" }, { duration: 0 });
+  await animate("#videoSlider", { x: "-100%" }, { duration: 0.2, delay: 0.5 });
+  await animate(
+    "#video1",
+    { rotate: 45, scale: 0.001 },
+    { duration: 0.2, delay: 5.1, ease: "linear" },
+  );
+
+  await animate("#videoSlider", { x: "-200%" }, { duration: 0.2 });
+  await animate(
+    "#video2",
+    { rotate: 45, scale: 0.001 },
+    { duration: 0.2, delay: 5.1, ease: "linear" },
+  );
+
+  await animate(
+    "#videoSlider",
+    { x: "-300%" },
+    { duration: 0.2, ease: "linear" },
+  );
 }
