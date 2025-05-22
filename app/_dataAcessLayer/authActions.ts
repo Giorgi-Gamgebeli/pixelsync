@@ -92,7 +92,7 @@ export async function signup(values: z.infer<typeof SignupSchema>): Promise<
 
     const { email, password, userName } = result.data;
 
-    const existingUser = await db.user.findUnique({
+    const isEmailUsed = await db.user.findUnique({
       where: {
         email,
       },
@@ -101,16 +101,27 @@ export async function signup(values: z.infer<typeof SignupSchema>): Promise<
       },
     });
 
-    if (existingUser) return { error: "Email already in use" };
+    if (isEmailUsed) return { error: "Email already in use" };
+
+    const isUserNameUsed = await db.user.findUnique({
+      where: {
+        userName: userName,
+      },
+      select: {
+        userName: true,
+      },
+    });
+
+    if (isUserNameUsed) return { error: "Username already in use" };
 
     const hashedPassword = await hash(password, 12);
 
     await db.user.create({
       data: {
-        userName: userName,
+        userName,
         email,
         password: hashedPassword,
-        name: "unknown123",
+        name: userName,
       },
     });
 

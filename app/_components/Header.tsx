@@ -1,5 +1,4 @@
 import ScrollFloatingAnimation from "./ScrollFloatingEffect";
-import FlexBox from "./FlexBox";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../public/noBGLogo.png";
@@ -7,8 +6,8 @@ import logo from "../../public/noBGLogo.png";
 function Header() {
   return (
     <ScrollFloatingAnimation>
-      <FlexBox className="items-center justify-between text-sm">
-        <FlexBox className="items-center gap-1">
+      <div className="flex items-center justify-between text-sm">
+        <div className="flex items-center gap-1">
           <div className="relative h-11 w-11 overflow-hidden rounded-full">
             <Image
               src={logo}
@@ -20,9 +19,9 @@ function Header() {
             />
           </div>
           <p className="text-lg">Pixel Sync</p>
-        </FlexBox>
+        </div>
         {/* <Nav /> */}
-        <FlexBox className="border-brand-200 items-center gap-2 border-l pl-2">
+        <div className="border-brand-200 flex items-center gap-2 border-l pl-2">
           <Link
             href="/auth/signin"
             className="border-brand-200 hover:bg-brand-200 rounded-full border px-3 py-2 transition-all duration-300"
@@ -35,8 +34,8 @@ function Header() {
           >
             Get Started
           </Link>
-        </FlexBox>
-      </FlexBox>
+        </div>
+      </div>
     </ScrollFloatingAnimation>
   );
 }

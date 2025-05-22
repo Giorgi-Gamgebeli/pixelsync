@@ -5,10 +5,10 @@ import ReactPlayer from "react-player";
 
 type VideoPlayerProps = {
   videoURL: string;
-  id:string;
+  id: string;
 };
 
-function VideoPlayer({ videoURL , id }: VideoPlayerProps) {
+function VideoPlayer({ videoURL, id }: VideoPlayerProps) {
   const playerRef = useRef<ReactPlayer | null>(null);
   const [isClient, setIsClient] = useState(false);
 

@@ -2,7 +2,6 @@
 
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Modal from "../_components/Modal";
-import FlexBox from "../_components/FlexBox";
 
 function AddProject() {
   return (
@@ -14,11 +13,11 @@ function AddProject() {
           </button>
         </Modal.Open>
         <Modal.Window name="addProject">
-          <FlexBox className="flex-col">
+          <div className="flex flex-col">
             <button>Create My Own</button>
             <h2>Already have an invite?</h2>
             <button>Join a Server</button>
-          </FlexBox>
+          </div>
         </Modal.Window>
       </Modal>
     </div>

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import FlexBox from "./_components/FlexBox";
 import Section from "./_components/Section";
 import LandingPageWhiteBoard from "./_components/LandingPageWhiteBoard";
 import Testimonial from "./_components/Testimonial";
@@ -16,7 +15,7 @@ function Page() {
       <Header />
 
       <Section divClassName="mt-20 grid min-h-[40rem]  grid-cols-2">
-        <FlexBox className="flex-col items-center justify-center gap-7">
+        <div className="flex flex-col items-center justify-center gap-7">
           <h1 className="text-brand-500 text-8xl font-extrabold">
             Unleash Your Creativity
           </h1>
@@ -30,7 +29,7 @@ function Page() {
           >
             Start Creating
           </Link>
-        </FlexBox>
+        </div>
 
         <LandingPageWhiteBoard />
       </Section>

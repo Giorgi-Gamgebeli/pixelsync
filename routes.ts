@@ -18,4 +18,4 @@ export const apiAuthPrefix = "/api/auth";
 
 // Route thats user being redirected to
 
-export const DEFAULT_LOGIN_REDIRECT = "/main";
+export const DEFAULT_LOGIN_REDIRECT = "/home/friends";

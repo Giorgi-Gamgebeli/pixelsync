@@ -90,7 +90,7 @@ function AuthRightSide() {
                 show: {
                   transition: {
                     staggerChildren: 0.2,
-                    delayChildren: 6.5,
+                    delayChildren: 7,
                   },
                 },
               }}

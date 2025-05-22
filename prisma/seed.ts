@@ -11,9 +11,11 @@ async function main() {
         email: "john@test.com",
         password:
           "$2b$12$Gb3bsH/caOkqwXHbbwZTX.MBNoe6aEl5wLIeP6b5NUybuBme6iKiG", // password123
+        name: "john_doe",
         userName: "john_doe",
         status: "ONLINE",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
+        image:
+          "https://pgqopytnbkjovvnwtvun.supabase.co/storage/v1/object/public/pixelsync-bucket//bob.jpeg",
         emailVerified: new Date(),
       },
     }),
@@ -23,9 +25,11 @@ async function main() {
         email: "jane@test.com",
         password:
           "$2b$12$Gb3bsH/caOkqwXHbbwZTX.MBNoe6aEl5wLIeP6b5NUybuBme6iKiG",
+        name: "jane_doe",
         userName: "jane_doe",
         status: "ONLINE",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
+        image:
+          "https://pgqopytnbkjovvnwtvun.supabase.co/storage/v1/object/public/pixelsync-bucket//jane.jpeg",
         emailVerified: new Date(),
       },
     }),
@@ -34,9 +38,11 @@ async function main() {
         email: "bob@test.com",
         password:
           "$2b$12$Gb3bsH/caOkqwXHbbwZTX.MBNoe6aEl5wLIeP6b5NUybuBme6iKiG",
+        name: "bob_smith",
         userName: "bob_smith",
         status: "OFFLINE",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob",
+        image:
+          "https://pgqopytnbkjovvnwtvun.supabase.co/storage/v1/object/public/pixelsync-bucket//john.jpeg",
         emailVerified: new Date(),
       },
     }),
@@ -51,7 +57,7 @@ async function main() {
     prisma.user.update({
       where: { id: users[0].id },
       data: {
-        User_A: {
+        friends: {
           connect: [{ id: users[1].id }, { id: users[2].id }],
         },
       },
@@ -59,10 +65,10 @@ async function main() {
     prisma.user.update({
       where: { id: users[1].id },
       data: {
-        User_B: {
+        friendOf: {
           connect: [{ id: users[0].id }],
         },
-        User_A: {
+        friends: {
           connect: [{ id: users[2].id }],
         },
       },
@@ -70,7 +76,7 @@ async function main() {
     prisma.user.update({
       where: { id: users[2].id },
       data: {
-        User_B: {
+        friendOf: {
           connect: [{ id: users[0].id }, { id: users[1].id }],
         },
       },

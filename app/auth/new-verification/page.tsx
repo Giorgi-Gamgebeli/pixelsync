@@ -1,4 +1,3 @@
-import FlexBox from "@/app/_components/FlexBox";
 import { BounceLoader } from "react-spinners";
 import Logo from "@/app/_components/Logo";
 import Submitter from "./Submitter";
@@ -13,9 +12,9 @@ function Page() {
         <Submitter />
       </Suspense>
 
-      <FlexBox className="flex-col items-center gap-20 rounded-2xl p-5">
+      <div className="flex flex-col items-center gap-20 rounded-2xl p-5">
         <BounceLoader color="oklch(0.715 0.143 215.221)" size={80} />
-      </FlexBox>
+      </div>
     </main>
   );
 }

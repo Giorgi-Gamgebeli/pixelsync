@@ -1,4 +1,3 @@
-import FlexBox from "../../_components/FlexBox";
 import Link from "next/link";
 import Logo from "@/app/_components/Logo";
 import ResetPasswordForm from "./ResetPasswordForm";
@@ -17,12 +16,12 @@ function page() {
 
         <ResetPasswordForm />
 
-        <FlexBox className="mt-5 justify-center gap-2 text-xl">
+        <div className="mt-5 flex justify-center gap-2 text-xl">
           <p>Already have an account?</p>
           <Link href="/auth/signin" className="text-brand-500 hover:underline">
             Sign In
           </Link>
-        </FlexBox>
+        </div>
       </div>
     </main>
   );

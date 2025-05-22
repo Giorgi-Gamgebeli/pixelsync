@@ -10,7 +10,6 @@ import { signup } from "../../_dataAcessLayer/authActions";
 import { useTransition } from "react";
 import AuthButton from "../AuthButton";
 import ProviderButton from "@/app/auth/ProviderButton";
-import FlexBox from "@/app/_components/FlexBox";
 import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
@@ -69,11 +68,11 @@ function SignUpForm() {
         Continue with Google
       </ProviderButton>
 
-      <FlexBox className="mt-8 items-center gap-3">
+      <div className="mt-8 flex items-center gap-3">
         <div className="w-full border-b border-gray-300" />
         <span className="text-xl">or</span>
         <div className="w-full border-b border-gray-300" />
-      </FlexBox>
+      </div>
 
       <FormRow
         errors={errors}

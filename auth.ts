@@ -2,19 +2,24 @@ import NextAuth, { NextAuthResult } from "next-auth";
 import authConfig from "./auth.config";
 import { db } from "@/app/_dataAcessLayer/db";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { generateUsername } from "./app/_utils/helpers";
 
 const nexAuth = NextAuth({
   events: {
     async linkAccount({ user }) {
+      const userName = generateUsername();
+
       await db.user.update({
         where: { id: user.id },
         data: {
           emailVerified: new Date(),
-          userName: "unknown123",
+          userName,
+          name: userName,
         },
       });
     },
   },
+
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;

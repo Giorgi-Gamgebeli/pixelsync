@@ -1,5 +1,4 @@
 import Image from "next/image";
-import FlexBox from "./FlexBox";
 import { Icon } from "@iconify/react";
 import defaultUserImg from "../../public/default-user.jpg";
 
@@ -30,7 +29,7 @@ function Testimonial({ name, rating, text, image }: TestimonialProps) {
   }
 
   return (
-    <FlexBox className="inline-flex min-w-[15.1rem] shrink-0 items-center gap-2 rounded-xl border border-gray-200 p-1">
+    <div className="inline-flex min-w-[15.1rem] shrink-0 items-center gap-2 rounded-xl border border-gray-200 p-1">
       <Image
         src={image || defaultUserImg}
         height={25}
@@ -39,9 +38,9 @@ function Testimonial({ name, rating, text, image }: TestimonialProps) {
         className="inline-block max-h-10 min-h-10 max-w-10 min-w-10 rounded-full"
       />
       <div>
-        <FlexBox className="items-center gap-2">
+        <div className="flex items-center gap-2">
           <span className="text-base text-nowrap">{name}</span>
-          <FlexBox className="text-yellow-400">
+          <div className="flex text-yellow-400">
             {stars.map((icon, i) => (
               <Icon
                 key={i}
@@ -49,12 +48,12 @@ function Testimonial({ name, rating, text, image }: TestimonialProps) {
                 className={`${(icon === "line-md:star-right-half-twotone" || icon === "line-md:star-twotone") && isDecimal && "-translate-x-[100%]"}`}
               />
             ))}
-          </FlexBox>
-        </FlexBox>
+          </div>
+        </div>
 
         <p className="text-sm text-nowrap">{text}</p>
       </div>
-    </FlexBox>
+    </div>
   );
 }
 

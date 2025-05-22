@@ -9,7 +9,6 @@ import { useEffect, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import FlexBox from "../../_components/FlexBox";
 import FormRow from "../../_components/FormRow";
 import { signin } from "../../_dataAcessLayer/authActions";
 import AuthButton from "../AuthButton";
@@ -79,11 +78,11 @@ function SignInForm() {
         Continue with Google
       </ProviderButton>
 
-      <FlexBox className="mt-8 items-center gap-3">
+      <div className="mt-8 flex items-center gap-3">
         <div className="w-full border-b border-gray-300" />
         <span className="text-xl">or</span>
         <div className="w-full border-b border-gray-300" />
-      </FlexBox>
+      </div>
 
       <FormRow
         errors={errors}
