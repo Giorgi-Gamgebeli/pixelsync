@@ -13,8 +13,14 @@ function AddProject() {
           </button>
         </Modal.Open>
         <Modal.Window name="addProject">
-          <div className="flex flex-col">
-            <button>Create My Own</button>
+          <div className="flex w-[30rem] flex-col">
+            <button className="flex justify-between border border-gray-300 px-3 py-5 text-2xl">
+              Create My Own
+              <Icon
+                icon="fluent:chevron-right-12-filled"
+                className="text-2xl"
+              />
+            </button>
             <h2>Already have an invite?</h2>
             <button>Join a Server</button>
           </div>

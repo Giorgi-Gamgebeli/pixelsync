@@ -29,3 +29,9 @@
 .clip-path-diagonal {
   clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
 }
+
+input:focus,
+textarea:focus {
+  outline: 2px solid var(--color-brand-200);
+  outline-offset: -1px;
+}

@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-function Filter() {
+function Filter({ pendingFriendRequests }: { pendingFriendRequests: boolean }) {
   const field = "filterBy";
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -20,19 +20,25 @@ function Filter() {
   return (
     <>
       <button
-        className={`flex cursor-pointer items-center gap-4 rounded-xl px-4 py-2 ${"online" === currentFilter ? "pointer-events-none bg-gray-200" : ""}`}
+        className={`flex cursor-pointer items-center gap-4 rounded-xl px-4 py-2 transition-all duration-300 hover:bg-gray-200 ${"online" === currentFilter ? "pointer-events-none bg-gray-200" : ""}`}
         onClick={() => handleClick("online")}
       >
         Online
       </button>
       <button
-        className={`flex cursor-pointer items-center gap-4 rounded-xl px-4 py-2 ${"all" === currentFilter ? "pointer-events-none bg-gray-200" : ""}`}
+        className={`flex cursor-pointer items-center gap-4 rounded-xl px-4 py-2 transition-all duration-300 hover:bg-gray-200 ${"all" === currentFilter ? "pointer-events-none bg-gray-200" : ""}`}
         onClick={() => handleClick("all")}
       >
         All
       </button>
       <button
-        className={`bg-brand-500 flex cursor-pointer items-center gap-4 rounded-xl px-4 py-2 text-white ${"addfriend" === currentFilter ? "" : ""}`}
+        className={`flex cursor-pointer items-center gap-4 rounded-xl px-4 py-2 transition-all duration-300 hover:bg-gray-200 ${pendingFriendRequests ? "visible" : "hidden"} ${"pending" === currentFilter ? "pointer-events-none bg-gray-200" : ""}`}
+        onClick={() => handleClick("pending")}
+      >
+        Pending
+      </button>
+      <button
+        className={`hover:bg-brand-600 flex cursor-pointer items-center gap-4 rounded-xl px-4 py-2 transition-all duration-300 ${"addfriend" === currentFilter ? "bg-brand-500/50 text-brand-700 pointer-events-none" : "bg-brand-500 text-white"}`}
         onClick={() => handleClick("addfriend")}
       >
         Add Friend

@@ -65,22 +65,19 @@ async function main() {
     prisma.user.update({
       where: { id: users[1].id },
       data: {
-        friendOf: {
-          connect: [{ id: users[0].id }],
-        },
         friends: {
-          connect: [{ id: users[2].id }],
+          connect: [{ id: users[0].id }, { id: users[2].id }],
         },
       },
     }),
-    prisma.user.update({
-      where: { id: users[2].id },
-      data: {
-        friendOf: {
-          connect: [{ id: users[0].id }, { id: users[1].id }],
-        },
-      },
-    }),
+    // prisma.user.update({
+    //   where: { id: users[2].id },
+    //   data: {
+    //     friends: {
+    //       connect: [{ id: users[1].id }],
+    //     },
+    //   },
+    // }),
   ]);
 
   await Promise.all([
