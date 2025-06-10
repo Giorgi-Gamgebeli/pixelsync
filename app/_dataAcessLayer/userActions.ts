@@ -3,8 +3,11 @@
 import { auth } from "@/auth";
 import { db } from "./db";
 import {
+  AcceptFriendRequestSchema,
   AddFriendSchema,
-  DeletePendingFriendRequestSchema,
+  CancelFriendRequestSchema,
+  DeclineFriendRequestSchema,
+  GetFriendSchema,
 } from "../_schemas/schemas";
 import { z } from "zod";
 import { handleErrorsOnServer } from "../_utils/helpers";
@@ -42,12 +45,48 @@ export async function getFriends() {
     // Create sets of IDs for fast comparison
     const friendIds = new Set(friends.map((f) => f.id));
     const mutualFriends = friendOf.filter((f) => friendIds.has(f.id));
-    console.log(userWithFriends);
 
     return mutualFriends;
   } catch (error) {
     console.error("Failed to get mutual friends:", error);
     return [];
+  }
+}
+
+export async function getFriend(values: z.infer<typeof GetFriendSchema>) {
+  try {
+    const res = GetFriendSchema.safeParse(values);
+    if (res.error) throw new Error("Validation failed on server!");
+    const { id } = res.data;
+
+    const session = await auth();
+    if (!session) throw new Error("Not authenticated!");
+
+    const friend = await db.user.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        userName: true,
+        image: true,
+        status: true,
+        sentMessages: {
+          where: {
+            senderId: session.user.id,
+          },
+        },
+        receivedMessages: {
+          where: {
+            receiverId: id,
+          },
+        },
+      },
+    });
+
+    return friend;
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -82,16 +121,12 @@ export async function getPendingFriendRequests() {
     const friendOfIDs = new Set(currentUserFriends?.friendOf.map((f) => f.id));
 
     const friendRequestsToThem =
-      currentUserFriends?.friends
-        .filter((f) => !friendOfIDs.has(f.id))
-        .map((f) => ({ ...f, requestToMe: false })) || [];
+      currentUserFriends?.friends.filter((f) => !friendOfIDs.has(f.id)) || [];
 
     const friendRequestsToMe =
-      currentUserFriends?.friendOf
-        .filter((f) => !friendsIDs.has(f.id))
-        .map((f) => ({ ...f, requestToMe: true })) || [];
+      currentUserFriends?.friendOf.filter((f) => !friendsIDs.has(f.id)) || [];
 
-    return [...friendRequestsToThem, ...friendRequestsToMe];
+    return { friendRequestsToThem, friendRequestsToMe };
   } catch (error) {
     console.log(error);
   }
@@ -148,11 +183,11 @@ export async function addFriend(values: z.infer<typeof AddFriendSchema>) {
   }
 }
 
-export async function deletePendingFriendRequest(
-  values: z.infer<typeof DeletePendingFriendRequestSchema>,
+export async function cancelFriendRequest(
+  values: z.infer<typeof CancelFriendRequestSchema>,
 ) {
   try {
-    const result = DeletePendingFriendRequestSchema.safeParse(values);
+    const result = CancelFriendRequestSchema.safeParse(values);
     if (result.error) throw new Error("Validation failed on server!");
     const { id } = result.data;
 
@@ -166,6 +201,62 @@ export async function deletePendingFriendRequest(
       data: {
         friends: {
           disconnect: {
+            id,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function declineFriendRequest(
+  values: z.infer<typeof DeclineFriendRequestSchema>,
+) {
+  try {
+    const result = DeclineFriendRequestSchema.safeParse(values);
+    if (result.error) throw new Error("Validation failed on server!");
+    const { id } = result.data;
+
+    const session = await auth();
+    if (!session) throw new Error("Not authenticated!");
+
+    await db.user.update({
+      where: {
+        id,
+      },
+      data: {
+        friends: {
+          disconnect: {
+            id: session.user.id,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function acceptFriendRequest(
+  values: z.infer<typeof AcceptFriendRequestSchema>,
+) {
+  try {
+    const result = AcceptFriendRequestSchema.safeParse(values);
+    if (result.error) throw new Error("Validation failed on server!");
+    const { id } = result.data;
+
+    const session = await auth();
+    if (!session) throw new Error("Not authenticated!");
+
+    await db.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        friends: {
+          connect: {
             id,
           },
         },

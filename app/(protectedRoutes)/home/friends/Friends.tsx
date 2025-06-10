@@ -21,12 +21,19 @@ type FriendsProps = {
     | undefined;
   pendingFriendsRequests:
     | {
-        requestToMe: boolean;
-        id: string;
-        name: string | null;
-        userName: string | null;
-        image: string | null;
-      }[]
+        friendRequestsToThem: {
+          image: string | null;
+          userName: string | null;
+          name: string | null;
+          id: string;
+        }[];
+        friendRequestsToMe: {
+          image: string | null;
+          userName: string | null;
+          name: string | null;
+          id: string;
+        }[];
+      }
     | undefined;
 };
 

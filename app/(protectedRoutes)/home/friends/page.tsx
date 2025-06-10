@@ -12,7 +12,6 @@ async function page() {
   const friends = await getFriends();
   const pendingFriendRequests = await getPendingFriendRequests();
 
-  console.log(pendingFriendRequests);
   return (
     <>
       <AppHeader>
@@ -20,7 +19,14 @@ async function page() {
           <Icon icon="fa-solid:user-friends" />
           Friends
         </h2>
-        <Filter pendingFriendRequests={!!pendingFriendRequests?.length} />
+        <Filter
+          pendingFriendRequests={
+            !!(
+              pendingFriendRequests?.friendRequestsToThem.length ||
+              pendingFriendRequests?.friendRequestsToMe.length
+            )
+          }
+        />
       </AppHeader>
       <AppMain>
         <div className="h-full w-full px-10 py-5">
