@@ -7,6 +7,7 @@ import {
   AddFriendSchema,
   CancelFriendRequestSchema,
   DeclineFriendRequestSchema,
+  GetDirectMessagesSchema,
   GetFriendSchema,
 } from "../_schemas/schemas";
 import { z } from "zod";
@@ -71,20 +72,80 @@ export async function getFriend(values: z.infer<typeof GetFriendSchema>) {
         userName: true,
         image: true,
         status: true,
-        sentMessages: {
+
+        friends: {
           where: {
-            senderId: session.user.id,
+            id: session.user.id,
           },
         },
-        receivedMessages: {
+        friendOf: {
           where: {
-            receiverId: id,
+            id,
           },
         },
       },
     });
 
-    return friend;
+    if (!friend) throw new Error("Friend was not found!");
+
+    const { friends, friendOf, ...friendValues } = friend;
+
+    if (!(friends.length && friendOf.length))
+      throw new Error("You are not friends with this user!");
+
+    return friendValues;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getDirectMessages(
+  values: z.infer<typeof GetDirectMessagesSchema>,
+) {
+  try {
+    const res = GetDirectMessagesSchema.safeParse(values);
+    if (res.error) throw new Error("Validaiton failed on server!");
+    const { id } = res.data;
+
+    const session = await auth();
+    if (!session) throw new Error("Not authenticated!");
+
+    const friend = await db.user.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        friends: {
+          where: {
+            id: session.user.id,
+          },
+        },
+        friendOf: {
+          where: {
+            id,
+          },
+        },
+      },
+    });
+
+    if (!friend) throw new Error("Friend was not found!");
+
+    if (!(friend.friends.length && friend.friendOf.length))
+      throw new Error("You are not friends with this user!");
+
+    const messages = await db.directMessage.findMany({
+      where: {
+        OR: [
+          { receiverId: id, senderId: session.user.id },
+          { receiverId: session.user.id, senderId: id },
+        ],
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+
+    return messages;
   } catch (error) {
     console.error(error);
   }

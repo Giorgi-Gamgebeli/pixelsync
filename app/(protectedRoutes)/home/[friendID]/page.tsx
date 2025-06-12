@@ -3,8 +3,12 @@ import AppMain from "../../AppMain";
 import Image from "next/image";
 import defaultUser from "@/public/default-user.jpg";
 import Empty from "@/app/_components/Empty";
-import { getFriend } from "@/app/_dataAcessLayer/userActions";
+import {
+  getDirectMessages,
+  getFriend,
+} from "@/app/_dataAcessLayer/userActions";
 import Messages from "./Messages";
+import { auth } from "@/auth";
 
 type Params = {
   params: Promise<{
@@ -14,10 +18,15 @@ type Params = {
 
 async function Page({ params }: Params) {
   const { friendID } = await params;
-  const friend = await getFriend({ id: friendID });
+  const [friend, directMessages, session] = await Promise.all([
+    getFriend({ id: friendID }),
+    getDirectMessages({ id: friendID }),
+    auth(),
+  ]);
+
   if (!friend) return <Empty text="Friend was not found!" />;
 
-  const { image, status, userName, sentMessages, receivedMessages } = friend;
+  const { image, status, userName } = friend;
 
   return (
     <>
@@ -40,10 +49,7 @@ async function Page({ params }: Params) {
         </div>
       </AppHeader>
       <AppMain>
-        <Messages
-          sentMessages={sentMessages}
-          receivedMessages={receivedMessages}
-        />
+        <Messages friend={friend} session={session} messages={directMessages} />
       </AppMain>
     </>
   );

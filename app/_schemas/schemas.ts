@@ -19,3 +19,7 @@ export const DeclineFriendRequestSchema = z.object({
 export const GetFriendSchema = z.object({
   id: z.string({ message: "Only text is allowed" }),
 });
+
+export const GetDirectMessagesSchema = z.object({
+  id: z.string({ message: "Only text is allowed" }),
+});
