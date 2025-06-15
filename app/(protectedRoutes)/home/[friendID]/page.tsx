@@ -10,6 +10,8 @@ import {
 import Messages from "./Messages";
 import { auth } from "@/auth";
 
+export const revalidate = 0;
+
 type Params = {
   params: Promise<{
     friendID: string;

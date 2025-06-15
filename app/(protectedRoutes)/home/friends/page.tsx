@@ -7,6 +7,9 @@ import AppHeader from "../../AppHeader";
 import Filter from "./Filter";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import AppMain from "../../AppMain";
+import { Suspense } from "react";
+
+export const revalidate = 0;
 
 async function page() {
   const friends = await getFriends();
@@ -30,10 +33,12 @@ async function page() {
       </AppHeader>
       <AppMain>
         <div className="h-full w-full px-10 py-5">
-          <Friends
-            pendingFriendsRequests={pendingFriendRequests!}
-            friends={friends}
-          />
+          <Suspense fallback={null}>
+            <Friends
+              pendingFriendsRequests={pendingFriendRequests!}
+              friends={friends}
+            />
+          </Suspense>
         </div>
       </AppMain>
       {/* <div className="col-start-3 col-end-4 row-start-2 -row-end-1"> */}

@@ -68,11 +68,20 @@ function AuthRightSide() {
             className="hidden w-full translate-x-[100%]"
             id="videoSlider"
           >
-            <VideoPlayer id="video1" videoURL="/sketchItOut.mp4" />
+            <VideoPlayer
+              id="video1"
+              videoURL="https://pgqopytnbkjovvnwtvun.supabase.co/storage/v1/object/public/pixelsync-bucket//sketchItOut.mp4"
+            />
 
-            <VideoPlayer id="video2" videoURL="/userFlow.mp4" />
+            <VideoPlayer
+              id="video2"
+              videoURL="https://pgqopytnbkjovvnwtvun.supabase.co/storage/v1/object/public/pixelsync-bucket//userFlow.mp4"
+            />
 
-            <VideoPlayer id="video3" videoURL="/design.mp4" />
+            <VideoPlayer
+              id="video3"
+              videoURL="https://pgqopytnbkjovvnwtvun.supabase.co/storage/v1/object/public/pixelsync-bucket//design.mp4"
+            />
           </MotionComponent>
         </div>
         <div className="flex items-center justify-center overflow-hidden">
